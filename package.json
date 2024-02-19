@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "description": "this is backend ",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "javascript"
   ],
   "author": "sudhir",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
 }
