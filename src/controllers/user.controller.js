@@ -15,27 +15,27 @@ const registerUser= asyncHandler(async(req, res)=>{
     // check for user creation
     // return respone
 
-    const {fullName,email,Username}= req.body
+    const {fullName,email,password,username,}= req.body
     console.log(email,"\n",fullName)
 
-    if ([fullName,email,Username,password].some((fiels)=> fiels?.trim()==="")) {
+    if ([fullName,email,username,password].some((field)=> field?.trim()==="")) {
         throw new ApiError(400,"All fiels are required")
         
     }
  // for check user already exist or not in database 
-    const existedUser=User.findOne({
+    const existedUser=await User.findOne({
         $or:[{username},{email}]
     })
     if (existedUser) {
         throw new ApiError(409,"User already exist")
         
     }
-    const avatarFilesLocalPath= req.fiels?.avatar[0]?.path;//? used for optional if it exist or not in server
+    const avatarLocalPath = req.files?.avatar[0]?.path;
     const coverImageLocalPath= req.fiels?.coverImage[0]?.path;
-    if (!avatar) {
-        throw new ApiError(400,"Avatar is required")
+    if (!avatarLocalPath) {
+        throw new ApiError(400, "Avatar file is required")
     }
-    const avatar= await uploadOnCloudinary(avatarFilesLocalPath)
+    const avatar= await uploadOnCloudinary(avatarLocalPath)
     if (!avatar) {
         throw new ApiError(400,"Avatar is required")
     }
@@ -43,7 +43,7 @@ const registerUser= asyncHandler(async(req, res)=>{
 
     //files uploading on database
     const user= await User.create({
-        fullname,
+        fullName,
         avatar:avatar.url,
         coverimage:coverImage?.url || "",
         email,
